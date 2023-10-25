@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "401647380136",
+    "project_id": "masterphone-46225",
+    "storage_bucket": "masterphone-46225.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:401647380136:android:6a6a8eb56f84835910849d",
+        "android_client_info": {
+          "package_name": "com.example.masterphone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf8vqZHPGSt36TCrpNDDqYHuddUAgdapo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
