@@ -20,12 +20,15 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 return new donhangFragment();
             case 2:
                 return new taikhoanFragment();
+            default:
+                return new khohangFragment();
         }
-        return null;
+//        return null;
     }
     //Trả về số lượng item (tương ứng với từng trang ở thanh trượt dưới)
     @Override
     public int getCount() {
         return 3;
     }
+
 }

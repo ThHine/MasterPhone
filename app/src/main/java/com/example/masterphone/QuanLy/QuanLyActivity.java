@@ -90,6 +90,8 @@ public class QuanLyActivity extends AppCompatActivity {
                     return true;
                 }
             });
+
+//            viewPager.setIdviewpagerapd(2).setEnabled(false);
 //            bottomNavigationView.getMenu().findItem(R.id.menutaikhoan).setEnabled(false);
 
             // Hiển thị thông báo với Snackbar
