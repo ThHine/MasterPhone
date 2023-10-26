@@ -1,4 +1,4 @@
-package com.example.masterphone.GIoHang;
+package com.example.masterphone.GioHang;
 
 import android.os.Parcel;
 import android.os.Parcelable;

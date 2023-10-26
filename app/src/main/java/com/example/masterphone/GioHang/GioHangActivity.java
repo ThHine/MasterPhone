@@ -1,4 +1,4 @@
-package com.example.masterphone.GIoHang;
+package com.example.masterphone.GioHang;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -53,7 +53,7 @@ public class GioHangActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_giohang);
+        setContentView(R.layout.giohang_activity_layoutgiohang);
 
         // ánh xạ
         AllAmount = findViewById(R.id.tvCartTotalPrice);
