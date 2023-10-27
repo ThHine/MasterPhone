@@ -56,11 +56,14 @@ public class SanPhamFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+    View v;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.quanly_fragment_sanpham, container, false);
+        v = inflater.inflate(R.layout.quanly_fragment_sanpham, container, false);
+
+
+        return v;
     }
 }
