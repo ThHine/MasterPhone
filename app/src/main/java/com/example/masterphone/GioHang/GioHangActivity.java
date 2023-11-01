@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.masterphone.GioHang.ThanhToan.ThanhToanActivity;
 import com.example.masterphone.HomeDashboard.HomeActivity;
 import com.example.masterphone.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -81,6 +82,8 @@ public class GioHangActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(cartItemRemovedReceiver, new IntentFilter("CartItemRemoved"));
 
         // get dữ liệu tổng giá tiền từ cart adapter
         LocalBroadcastManager.getInstance(this)
@@ -89,6 +92,9 @@ public class GioHangActivity extends AppCompatActivity {
 //        // get dữ liệu tổng sản phẩm từ cart adapter
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(qMessageReceiver, new IntentFilter("MyTotalQuantity"));
+
+//        LocalBroadcastManager.getInstance(this)
+//                .registerReceiver(cartItemRemovedReceiver, new IntentFilter("CartItemRemoved"));
 
         //set dữ liệu
         recyclerView = findViewById(R.id.rvCart);
@@ -122,13 +128,23 @@ public class GioHangActivity extends AppCompatActivity {
 //                }
 //            });
 
-//            Intent i = new Intent(GioHangActivity.this, ThanhToanActivity.class);
-//            i.putExtra("totalPriceFromCart", totalBill);
-//            i.putExtra("totalQuantityFromCart", totalQuantity);
-//            startActivity(i);
+            Intent i = new Intent(GioHangActivity.this, ThanhToanActivity.class);
+            i.putExtra("totalPriceFromCart", totalBill);
+            i.putExtra("totalQuantityFromCart", totalQuantity);
+            startActivity(i);
         });
     }
-
+    private boolean checkCartEmpty() {
+        return cartModelList.isEmpty();
+    }
+    private void updateCartStatus() {
+        if (checkCartEmpty()) {
+            btnThanhToan.setEnabled(false);
+            AllAmount.setText("Chưa có sản phẩm");
+        } else {
+            btnThanhToan.setEnabled(true);
+        }
+    }
     @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     @Override
     protected void onResume() {
@@ -147,6 +163,12 @@ public class GioHangActivity extends AppCompatActivity {
                 AllAmount.setText(NumberFormat.getNumberInstance(Locale.US).format(totalAmount)+" VNĐ");
 //                AllAmount.setText(totalAmount + " VNĐ");
                 cartAdapter.notifyDataSetChanged();
+                if (checkCartEmpty()) {
+                    btnThanhToan.setEnabled(false);
+                    AllAmount.setText("Chưa có sản phẩm");
+                } else {
+                    btnThanhToan.setEnabled(true);
+                }
             }
         });
     }
@@ -162,6 +184,21 @@ public class GioHangActivity extends AppCompatActivity {
             }
         }
     };
+
+    private BroadcastReceiver cartItemRemovedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Lấy dữ liệu sản phẩm bị xóa và số lượng sản phẩm còn lại từ Intent
+            GioHangItemModel removedItem = intent.getParcelableExtra("removedItem");
+            int remainingQuantity = intent.getIntExtra("remainingQuantity", 0);
+
+            // Cập nhật tổng tiền trong giỏ hàng
+            totalBill -= (removedItem.getPrice() * removedItem.getTotalQuantity());
+            AllAmount.setText(NumberFormat.getNumberInstance(Locale.US).format(totalBill) + " VNĐ");
+
+            updateCartStatus();
+        }
+    };
     // hàm nhận tổng sản phẩm từ cart adapter
     public BroadcastReceiver qMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -169,4 +206,5 @@ public class GioHangActivity extends AppCompatActivity {
             totalQuantity = intent.getIntExtra("totalQuantity", 1);
         }
     };
+
 }

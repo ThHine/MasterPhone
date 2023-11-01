@@ -70,12 +70,24 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.ViewHold
         CollectionReference collectionReference = firestore.collection("USERS").document(auth.getCurrentUser().getUid()).collection("AddToCart");
 
         holder.btnXoaSP.setOnClickListener(view -> {
-            list.remove(position);
-//            totalAmount -= list.get(position).getPrice() * list.get(position).getTotalQuantity();
-            notifyItemRemoved(position);
+//            list.remove(position);
+////            totalAmount -= list.get(position).getPrice() * list.get(position).getTotalQuantity();
+//            notifyItemRemoved(position);
+//
+//            notifyDataSetChanged();
+//            notifyItemRangeChanged(position, list.size());
 
+            list.remove(position);
+            notifyItemRemoved(position);
             notifyDataSetChanged();
             notifyItemRangeChanged(position, list.size());
+
+            // Gửi thông báo địa phương với dữ liệu sản phẩm bị xóa và số lượng sản phẩm còn lại
+            Intent i = new Intent("CartItemRemoved");
+            i.putExtra("removedItem", item);
+            i.putExtra("remainingQuantity", list.size());
+            LocalBroadcastManager.getInstance(context).sendBroadcast(i);
+
             collectionReference.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DocumentSnapshot doc = task.getResult().getDocuments().get(position);

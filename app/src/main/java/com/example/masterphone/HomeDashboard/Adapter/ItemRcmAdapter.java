@@ -65,6 +65,7 @@ public class ItemRcmAdapter extends RecyclerView.Adapter<ItemRcmAdapter.ItemView
             @Override
             public void onClick(View v) {
                 onClickItemListener.onClickToDetail(item.getName(),item.getPrice(),item.getDescription(),item.getImage());
+                onClickItemListener.onClickGetInfo(item.getName(),item.getPrice(),item.getDescription(),item.getImage());
             }
         });
         holder.aitrcmadd.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +153,7 @@ public class ItemRcmAdapter extends RecyclerView.Adapter<ItemRcmAdapter.ItemView
     }
     public interface onClickItem{
         void onClickToDetail(String name, int price, String description, String picture);
+        void onClickGetInfo(String name, int price, String desription, String picture);
     }
     @Override
     public int getItemCount() {

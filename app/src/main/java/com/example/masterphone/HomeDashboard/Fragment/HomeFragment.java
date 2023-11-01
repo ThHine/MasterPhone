@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
+import com.example.masterphone.GioHang.GioHangActivity;
 import com.example.masterphone.HomeDashboard.Adapter.ItemFavouAdapter;
 import com.example.masterphone.HomeDashboard.Adapter.ItemRcmAdapter;
 import com.example.masterphone.HomeDashboard.UserInfoActivity;
@@ -36,6 +37,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -113,7 +116,13 @@ public class HomeFragment extends Fragment implements ItemFavouAdapter.onClickIt
             }
         });
         //Trỏ tới giỏ hàng
-
+        mimgbtCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cartintent = new Intent(HomeFragment.this.getActivity(), GioHangActivity.class);
+                startActivity(cartintent);
+            }
+        });
         //Liên hệ
 
 
@@ -574,6 +583,12 @@ public class HomeFragment extends Fragment implements ItemFavouAdapter.onClickIt
         i.putExtra("gia", price);
         i.putExtra("anh", picture);
         startActivity(i);
+    }
+
+    @Override
+    public void onClickGetInfo(String name, int price, String desription, String picture) {
+        System.out.println(name);
+
     }
 
     @Override
