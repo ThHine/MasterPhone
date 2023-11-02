@@ -39,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvLSDH"
-        tools:listitem="@layout/historyorderitem">
+        tools:listitem="@layout/donhang_acitivy_historyorderitem">
 
     </androidx.recyclerview.widget.RecyclerView>
 

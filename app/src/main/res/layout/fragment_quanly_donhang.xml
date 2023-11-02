@@ -7,13 +7,19 @@
     android:background="@color/purple_200"
     tools:context=".QuanLy.Fragment.khohangFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Xin chào"
-        app:layout_constraintTop_toTopOf="parent"
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="Đăng xuất"
+        android:textSize="18dp"
+        android:fontFamily="@font/inter"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@color/xanh"
+        android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

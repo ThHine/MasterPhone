@@ -12,6 +12,15 @@ public class HistoryOrderModel {
     }
 
     int tongSoLuong;
+    String diachi;
+
+    public String getDiachi() {
+        return diachi;
+    }
+
+    public void setDiachi(String diachi) {
+        this.diachi = diachi;
+    }
 
     String makhachhang;
     public String getMakhachhang() {
@@ -22,6 +31,15 @@ public class HistoryOrderModel {
         this.makhachhang = makhachhang;
     }
 
+    public HistoryOrderModel(String madonhang, String diachi, String makhachhang, int tongGia, String ngayMua, String thoigianMua, int trangthai) {
+        this.madonhang = madonhang;
+        this.diachi = diachi;
+        this.makhachhang = makhachhang;
+        this.tongGia = tongGia;
+        this.ngayMua = ngayMua;
+        this.thoigianMua = thoigianMua;
+        this.trangthai = trangthai;
+    }
 
     int tongGia;
     String ngayMua;
@@ -37,20 +55,20 @@ public class HistoryOrderModel {
         this.trangthai = trangthai;
     }
 
-    public HistoryOrderModel(int tongSoLuong, int tongGia, String ngayMua, String thoigianMua, int trangthai) {
-        this.tongSoLuong = tongSoLuong;
-        this.tongGia = tongGia;
-        this.ngayMua = ngayMua;
-        this.thoigianMua = thoigianMua;
-        this.trangthai = trangthai;
-    }
-
-    public HistoryOrderModel(int tongSoLuong, int tongGia, String ngayMua, String thoigianMua) {
-        this.tongSoLuong = tongSoLuong;
-        this.tongGia = tongGia;
-        this.ngayMua = ngayMua;
-        this.thoigianMua = thoigianMua;
-    }
+//    public HistoryOrderModel(int tongSoLuong, int tongGia, String ngayMua, String thoigianMua, int trangthai) {
+//        this.tongSoLuong = tongSoLuong;
+//        this.tongGia = tongGia;
+//        this.ngayMua = ngayMua;
+//        this.thoigianMua = thoigianMua;
+//        this.trangthai = trangthai;
+//    }
+//
+//    public HistoryOrderModel(int tongSoLuong, int tongGia, String ngayMua, String thoigianMua) {
+//        this.tongSoLuong = tongSoLuong;
+//        this.tongGia = tongGia;
+//        this.ngayMua = ngayMua;
+//        this.thoigianMua = thoigianMua;
+//    }
 
     public HistoryOrderModel() {
     }

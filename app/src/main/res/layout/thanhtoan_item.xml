@@ -27,9 +27,9 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:text="Tên SP"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textColor="@color/black"
-            android:layout_marginTop="32dp"/>
+            android:layout_marginTop="20dp"/>
 
 <!--        <TextView-->
 <!--            android:id="@+id/tvPriceThanhToanItem"-->
@@ -43,7 +43,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
+            android:textSize="16dp"
             android:text="Số lượng: "
             app:layout_constraintLeft_toRightOf="@id/ivThanhToanItem"
             app:layout_constraintTop_toBottomOf="@id/tvNameThanhToanItem" />
@@ -53,9 +54,10 @@
             android:id="@+id/tvQuantityThanhToanItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             android:layout_marginRight="120dp"
             android:textStyle="bold"
+            android:textSize="16dp"
             android:text="3"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvNameThanhToanItem" />
@@ -68,6 +70,7 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:text="300000"
+            android:layout_marginBottom="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toRightOf="@id/ivThanhToanItem"

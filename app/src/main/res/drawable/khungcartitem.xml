@@ -6,7 +6,7 @@
 
     <!-- và đây là bán kính đường tròn ở 4 góc -->
     <corners
-        android:radius="30dp" />
+        android:radius="25dp" />
 
 
     <solid android:color="#ffffff"/>

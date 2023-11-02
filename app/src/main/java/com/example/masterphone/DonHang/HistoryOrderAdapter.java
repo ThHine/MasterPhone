@@ -10,10 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.masterphone.HomeDashboard.Adapter.ItemRcmAdapter;
 import com.example.masterphone.R;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapter.ViewHolder>{
 
@@ -35,7 +36,7 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         // nạp layout cho view biểu diễn phần từ history order item
-        View userView = inflater.inflate(R.layout.historyorderitem,parent,false);
+        View userView = inflater.inflate(R.layout.donhang_acitivy_historyorderitem,parent,false);
         //
         ViewHolder viewHolder = new ViewHolder(userView);
         return viewHolder;
@@ -48,8 +49,8 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 //        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-        holder.tongSoLuong.setText(String.valueOf(item.getTongSoLuong()));
-        holder.tongGia.setText(String.valueOf(item.getTongGia()));
+        holder.diachi.setText(item.getDiachi());
+        holder.tongGia.setText(NumberFormat.getNumberInstance(Locale.US).format(item.getTongGia()) + " VNĐ");
         holder.ngayMua.setText(item.getNgayMua());
         holder.gioMua.setText(item.getThoigianMua());
         int trangthai = item.getTrangthai();
@@ -83,10 +84,10 @@ public class HistoryOrderAdapter extends RecyclerView.Adapter<HistoryOrderAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tongSoLuong, tongGia, ngayMua, gioMua, trangthai;
+        TextView diachi, tongGia, ngayMua, gioMua, trangthai;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tongSoLuong = itemView.findViewById(R.id.HistoryTongSL);
+            diachi = itemView.findViewById(R.id.HistoryDiaChi);
             tongGia = itemView.findViewById(R.id.HistoryTongGia);
             ngayMua = itemView.findViewById(R.id.HistoryNgayMua);
             gioMua = itemView.findViewById(R.id.HistoryGioMua);

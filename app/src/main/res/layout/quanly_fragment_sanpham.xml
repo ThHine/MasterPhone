@@ -3,13 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".QuanLy.TabFragment.SanPhamFragment"
     android:background="@color/candy">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvSP"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Xin chào" />
-
+        android:layout_height="686dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:listitem="@layout/sanphamitem"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnFloatingAddProduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="120dp"
+        android:layout_marginRight="20dp"
+        android:contentDescription="Thêm sản phẩm"
+        app:srcCompat="@drawable/plus"
+        android:backgroundTint="@color/cake"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_gravity="bottom|right" />
 </FrameLayout>

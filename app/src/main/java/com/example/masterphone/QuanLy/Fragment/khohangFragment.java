@@ -39,7 +39,6 @@ public class khohangFragment extends Fragment {
         khohangViewPagerAdapter adapter = new khohangViewPagerAdapter(getChildFragmentManager()
         , FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(adapter);
-        viewPager.setPagingEnabled(false);
         tabLayout.setupWithViewPager(viewPager);
         return v;
     }

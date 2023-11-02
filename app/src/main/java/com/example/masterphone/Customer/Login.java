@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 //import com.example.cherrycake.R;
 
 import com.example.masterphone.HomeDashboard.HomeActivity;
+import com.example.masterphone.QuanLy.QuanLyActivity;
 import com.example.masterphone.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -184,9 +185,9 @@ public class Login extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        if ((medtmail.getText().toString()).equals("cherrycake6868@gmail.com") && (medtpass.getText().toString()).equals("hehe321")) {
-//                                            Intent intent = new Intent(Login.this, HomeAdmin.class);
-//                                            startActivity(intent);
+                                        if ((medtmail.getText().toString()).equals("cherrycake6868@gmail.com") && (medtpass.getText().toString()).equals("hehe12345")) {
+                                            Intent intent = new Intent(Login.this, QuanLyActivity.class);
+                                            startActivity(intent);
                                         } else {
                                             Boolean verification = auth.getCurrentUser().isEmailVerified();
                                             if (verification == true) {
