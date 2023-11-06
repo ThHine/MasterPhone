@@ -290,13 +290,15 @@ public class ThanhToanActivity extends AppCompatActivity {
         dateInfo.put("trangthai", trangthai);
 
 
-        String idDetail = UUID.randomUUID().toString();
-        CollectionReference OrderInfocollectionReference = firestore.collection("ORDERS").document(id)
-                .collection("ORDERINFO");
-        DocumentReference OrderInfoDocumentReference = firestore.collection("ORDERS").document(id)
-                .collection("ORDERINFO").document(idDetail);
+
+//        CollectionReference OrderInfocollectionReference = firestore.collection("ORDERS").document(id)
+//                .collection("ORDERINFO");
+
 
         for (ThanhToanModel model: thanhToanModelList){
+            String idDetail = UUID.randomUUID().toString();
+            DocumentReference OrderInfoDocumentReference = firestore.collection("ORDERS").document(id)
+                    .collection("ORDERINFO").document(idDetail);
             Map<String, Object> orderDetail = new HashMap<>();
             orderDetail.put("madonhang", id);
             orderDetail.put("machitietdonhang", idDetail);

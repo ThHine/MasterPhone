@@ -51,8 +51,7 @@ public class HistoryOrderDetailActivity extends AppCompatActivity {
             }
         });
 
-        historyOrderDetailAdapter = new HistoryOrderDetailAdapter(this, historyOrderDetailModelList);
-        recyclerView.setAdapter(historyOrderDetailAdapter);
+
         String madonhang = getIntent().getStringExtra("madonhang");
         firestore.collection("ORDERS").document(madonhang)
                 .collection("ORDERINFO").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -61,11 +60,13 @@ public class HistoryOrderDetailActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot doc : task.getResult().getDocuments()) {
                                 HistoryOrderDetailModel historyOrderDetailModel = doc.toObject(HistoryOrderDetailModel.class);
-                                historyOrderDetailModelList.add(historyOrderDetailModel);
+                                historyOrderDetailAdapter.add(historyOrderDetailModel);
                                 historyOrderDetailAdapter.notifyDataSetChanged();
                             }
                         }
                     }
                 });
+        historyOrderDetailAdapter = new HistoryOrderDetailAdapter(this, historyOrderDetailModelList);
+        recyclerView.setAdapter(historyOrderDetailAdapter);
     }
 }

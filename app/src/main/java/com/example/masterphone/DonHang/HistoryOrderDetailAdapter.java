@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.masterphone.HomeDashboard.SanPham.ProductModel;
 import com.example.masterphone.R;
 
 import java.text.NumberFormat;
@@ -66,5 +67,9 @@ public class HistoryOrderDetailAdapter extends RecyclerView.Adapter<HistoryOrder
             price = itemView.findViewById(R.id.tvPriceThanhToanItem);
             totalQuantity = itemView.findViewById(R.id.tvQuantityThanhToanItem);
         }
+    }
+    public void add(HistoryOrderDetailModel historyOrderDetailModel) {
+        list.add(historyOrderDetailModel);
+        notifyDataSetChanged();
     }
 }
