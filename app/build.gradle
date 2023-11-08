@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:24.1.1'
     implementation 'com.google.firebase:firebase-auth:21.0.3'
     implementation 'com.google.firebase:firebase-storage:20.0.1'
+    implementation fileTree(dir: 'D:\\ThirdSemester\\cnpmNC\\TH\\Project\\zalopayIntergration', include: ['*.aar', '*.jar'], exclude: [])
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -49,4 +50,7 @@ dependencies {
 
     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.2'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+    //Zalopay
+    implementation("com.squareup.okhttp3:okhttp:4.6.0")
+    implementation("commons-codec:commons-codec:1.14")
 }

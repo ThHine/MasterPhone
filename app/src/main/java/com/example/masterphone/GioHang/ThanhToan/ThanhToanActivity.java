@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -39,6 +40,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +52,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
+import vn.zalopay.sdk.Environment;
+import vn.zalopay.sdk.ZaloPayError;
+import vn.zalopay.sdk.ZaloPaySDK;
+import vn.zalopay.sdk.listeners.PayOrderListener;
+
+import org.json.JSONObject;
 public class ThanhToanActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
@@ -60,7 +69,7 @@ public class ThanhToanActivity extends AppCompatActivity {
     Button btnMuaHang;
     int totalPrice;
     int totalQuantity;
-
+    String totalPriceZaloPay;
     // firebase
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
@@ -68,7 +77,7 @@ public class ThanhToanActivity extends AppCompatActivity {
     FirebaseUser user;
     String userID;
     EditText medtDiaChi;
-//    CheckBox cbDiaChi;
+    CheckBox cbDiaChi;
 //    boolean isCheckboxChecked = false;
 //    boolean isEditTextFilled = false;
     String diachi, ten, sodienthoai;
@@ -90,6 +99,17 @@ public class ThanhToanActivity extends AppCompatActivity {
 
         medtDiaChi = findViewById(R.id.edtDiaChi);
         btnHome = findViewById(R.id.iconCartHome);
+
+        //ZaloPay
+        StrictMode.ThreadPolicy policy = new
+                StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        // ZaloPay SDK Init
+        ZaloPaySDK.init(2553, Environment.SANDBOX);
+
+
+
         btnHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,36 +117,37 @@ public class ThanhToanActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-//        cbDiaChi = findViewById(R.id.checkboxDiaChi);
+        cbDiaChi = findViewById(R.id.checkboxDiaChi);
 
 
-//        cbDiaChi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        cbDiaChi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 //                isCheckboxChecked = isChecked;
-//                if (isChecked) {
-//                    // Lấy tài khoản có sẵn từ Firestore và hiển thị
-//                    DocumentReference InfoProfiledocumentReference = firestore.collection("USERS").document(userID);
-//                    InfoProfiledocumentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                        @Override
-//                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                            String diachi = documentSnapshot.getString("Address");
-//                            medtDiaChi.setText(diachi);
-//                        }
-//                    });
-//
-//                    medtDiaChi.setEnabled(false);
-//                    medtDiaChi.setAlpha(0.5f); // Làm mờ EditText
-//                    // Thực hiện lấy tên tài khoản từ Firestore và cập nhật lên giao diện
-//                    // ...
-//                } else {
-//                    medtDiaChi.setEnabled(true);
-//                    medtDiaChi.setAlpha(1.0f); // Đặt lại trạng thái bình thường của EditText
-//                }
+                if (isChecked) {
+                    // Lấy tài khoản có sẵn từ Firestore và hiển thị
+                    DocumentReference InfoProfiledocumentReference = firestore.collection("USERS").document(userID);
+                    InfoProfiledocumentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            String diachi = documentSnapshot.getString("Address");
+                            medtDiaChi.setText(diachi);
+                        }
+                    });
+
+                    medtDiaChi.setEnabled(false);
+                    medtDiaChi.setAlpha(0.5f); // Làm mờ EditText
+                    // Thực hiện lấy tên tài khoản từ Firestore và cập nhật lên giao diện
+                    // ...
+                } else {
+                    medtDiaChi.setEnabled(true);
+                    medtDiaChi.setAlpha(1.0f); // Đặt lại trạng thái bình thường của EditText
+                    medtDiaChi.setText(null);
+                }
 //                checkPaymentButtonEnabled();
-//
-//            }
-//        });
+
+            }
+        });
 
 //        medtDiaChi.addTextChangedListener(new TextWatcher() {
 //            @Override
@@ -159,6 +180,7 @@ public class ThanhToanActivity extends AppCompatActivity {
         totalPrice = getIntent().getIntExtra("totalPriceFromCart", 0);
         // format giá
         String totalGia = NumberFormat.getNumberInstance(Locale.US).format(totalPrice);
+        totalPriceZaloPay = Integer.toString(totalPrice);
         tvToTalPriceOfPay.setText(totalGia + " VNĐ");
 
         //load và nhận dữ liệu tổng sản phẩm
@@ -239,6 +261,7 @@ public class ThanhToanActivity extends AppCompatActivity {
             }
         });
     }
+
 //    private void checkPaymentButtonEnabled() {
 //        btnMuaHang.setEnabled(isCheckboxChecked || isEditTextFilled);
 //    }
@@ -294,37 +317,50 @@ public class ThanhToanActivity extends AppCompatActivity {
 //        CollectionReference OrderInfocollectionReference = firestore.collection("ORDERS").document(id)
 //                .collection("ORDERINFO");
 
-
-        for (ThanhToanModel model: thanhToanModelList){
-            String idDetail = UUID.randomUUID().toString();
-            DocumentReference OrderInfoDocumentReference = firestore.collection("ORDERS").document(id)
-                    .collection("ORDERINFO").document(idDetail);
-            Map<String, Object> orderDetail = new HashMap<>();
-            orderDetail.put("madonhang", id);
-            orderDetail.put("machitietdonhang", idDetail);
-            orderDetail.put("name", model.getName());
-            orderDetail.put("soluong", model.getTotalQuantity());
-            orderDetail.put("anh", model.getAnh());
-            orderDetail.put("price", model.getPrice());
+        DocumentReference documentReference = firestore.collection("ORDERS").document(id);
+        documentReference.set(dateInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                for (ThanhToanModel model: thanhToanModelList){
+                    String idDetail = UUID.randomUUID().toString();
+                    DocumentReference OrderInfoDocumentReference = firestore.collection("ORDERS").document(id)
+                            .collection("ORDERINFO").document(idDetail);
+                    Map<String, Object> orderDetail = new HashMap<>();
+                    orderDetail.put("madonhang", id);
+                    orderDetail.put("machitietdonhang", idDetail);
+                    orderDetail.put("name", model.getName());
+                    orderDetail.put("soluong", model.getTotalQuantity());
+                    orderDetail.put("anh", model.getAnh());
+                    orderDetail.put("price", model.getPrice());
 //            orderDetail.put("tongGia",totalPrice);
 //            orderDetail.put("ngayMua", saveCurrentDate);
 //            orderDetail.put("thoigianMua", saveCurrentTime);
 //            orderDetail.put("trangthai", trangthai);
 
 //            OrderInfocollectionReference.add(orderDetail);
-            OrderInfoDocumentReference.set(orderDetail);
-        }
+                    OrderInfoDocumentReference.set(orderDetail);
+                }
+                requestZaloPay(id);
+
+//                Intent i = new Intent(ThanhToanActivity.this, SuccessOrderActivity.class);
+//                startActivity(i);
+            }
+        });
 
 
 
-        for (String key: dateInfo.keySet()) {
-            System.out.println(key);
-            System.out.println(dateInfo.get(key));
-        }
-        for (ThanhToanModel model: thanhToanModelList){
-            System.out.println(model.getName());
-            System.out.println(model.getPrice());
-        }
+        //Test chi tiết hiển thị trong hệ thống
+//        for (String key: dateInfo.keySet()) {
+//            System.out.println(key);
+//            System.out.println(dateInfo.get(key));
+//        }
+//        for (ThanhToanModel model: thanhToanModelList){
+//            System.out.println(model.getName());
+//            System.out.println(model.getPrice());
+//        }
+
+        //ZaloPayRequest
+
 
 //        DocumentReference TongOrderdocumentReference = firestore.collection("USERS").document(auth.getCurrentUser().getUid())
 //                .collection("Orders").document("TongOrder");
@@ -338,14 +374,17 @@ public class ThanhToanActivity extends AppCompatActivity {
 
 //        DocumentReference TongOrderdocumentReference = firestore.collection("USERS").document(auth.getCurrentUser().getUid())
 //                .collection("Orders").document(id);
-        DocumentReference documentReference = firestore.collection("ORDERS").document(id);
-        documentReference.set(dateInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Intent i = new Intent(ThanhToanActivity.this, SuccessOrderActivity.class);
-                startActivity(i);
-            }
-        });
+
+//        DocumentReference documentReference = firestore.collection("ORDERS").document(id);
+//        documentReference.set(dateInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//                Intent i = new Intent(ThanhToanActivity.this, SuccessOrderActivity.class);
+//                startActivity(i);
+//            }
+//        });
+
+
 //        TongOrderdocumentReference.set(dateInfo).addOnCompleteListener(new OnCompleteListener<Void>() {
 //            @Override
 //            public void onComplete(@NonNull Task<Void> task) {
@@ -354,6 +393,56 @@ public class ThanhToanActivity extends AppCompatActivity {
 //            }
 //        });
     }
+    private void requestZaloPay(String idDonHang){
+        CreateOrder orderApi = new CreateOrder();
+
+        try {
+            JSONObject data = orderApi.createOrder(totalPriceZaloPay);
+//            Log.d("Amount", txtAmount.getText().toString());
+//            lblZpTransToken.setVisibility(View.VISIBLE);
+
+            //Mã trạng thái (đại loại vậy)
+            String code = data.getString("return_code");
+            Toast.makeText(getApplicationContext(), "return_code: " + code, Toast.LENGTH_LONG).show();
+
+            if (code.equals("1")) {
+//                lblZpTransToken.setText("zptranstoken");
+                //Mã giao dịch
+                String token = data.getString("zp_trans_token");
+
+                ZaloPaySDK.getInstance().payOrder(ThanhToanActivity.this, token, "demozpdk://app", new PayOrderListener() {
+                    @Override
+                    public void onPaymentSucceeded(String s, String s1, String s2) {
+                        //Nếu thanh toán thành công thì sẽ đưa lên mã giao dịch cho bên admin kiểm tra và đưa đơn hàng lên dữ liệu
+
+                    }
+
+                    @Override
+                    public void onPaymentCanceled(String s, String s1) {
+                        //Nếu thanh toán bị hủy thì sẽ
+                    }
+
+                    @Override
+                    public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
+
+                    }
+                });
+//                txtToken.setText(data.getString("zp_trans_token"));
+//                IsDone();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        ZaloPaySDK.getInstance().onResult(intent);
+    }
+
 //Voucher
 //    public BroadcastReceiver mMessageReceiverVoucher = new BroadcastReceiver() {
 //        @SuppressLint("SetTextI18n")
