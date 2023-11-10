@@ -37,6 +37,7 @@ public class QuanLyActivity extends AppCompatActivity {
         btnav.show(1,true );
         btnav.add(new MeowBottomNavigation.Model(1, R.drawable.btnavhome));
         btnav.add(new MeowBottomNavigation.Model(2, R.drawable.btnavgrid));
+
 //        btnav.add(new MeowBottomNavigation.Model(3, R.drawable.btnavuserinf));
 //        btnav.add(new MeowBottomNavigation.Model(4, R.drawable.btnavuserinf));
         btnav.setEnabled(false);

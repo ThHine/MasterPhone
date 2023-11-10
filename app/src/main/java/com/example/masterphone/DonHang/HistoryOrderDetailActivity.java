@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -68,5 +69,8 @@ public class HistoryOrderDetailActivity extends AppCompatActivity {
                 });
         historyOrderDetailAdapter = new HistoryOrderDetailAdapter(this, historyOrderDetailModelList);
         recyclerView.setAdapter(historyOrderDetailAdapter);
+
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(HistoryOrderDetailActivity.this, DividerItemDecoration.VERTICAL);
+        recyclerView.addItemDecoration(itemDecoration);
     }
 }
